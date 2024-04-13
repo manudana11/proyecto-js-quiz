@@ -57,8 +57,16 @@ const startGame = () => {
 const showQuestions = () => {
     const currentQuestion = questionsApi[currentQuestionIndex]
     questionElement.innerText = currentQuestion.question;
-    const allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers];
     const correctAnswer = currentQuestion.correct_answer;
+    let allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers];
+    const arrayMix = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+    allAnswers = arrayMix(allAnswers);
     allAnswers.forEach((answers) => {
         const button = document.createElement('button');
         button.innerText = answers;

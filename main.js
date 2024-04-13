@@ -9,9 +9,12 @@ const statsNav = document.getElementById('stats-nav');
 const welcomeQuiz = document.getElementById('welcome-quiz');
 const btnStart = document.getElementById('btn-start');
 const btnNext = document.getElementById('btn-next');
+const btnStats = document.getElementById('btn-stats');
 const questionsContainerElement = document.getElementById('questions-container');
 const questionElement = document.getElementById('questions');
 const answersButtonsElement = document.getElementById('answers-buttons');
+const questionCategoryElement = document.getElementById('questions-category');
+const questionDificultyElement = document.getElementById('questions-dificulty');
 const API_URL = 'https://opentdb.com/api.php?amount=10';
 let questionsApi = [];
 let correctAnswerAcumulator = 0;
@@ -56,7 +59,9 @@ const startGame = () => {
 
 const showQuestions = () => {
     const currentQuestion = questionsApi[currentQuestionIndex]
-    questionElement.innerText = currentQuestion.question;
+    questionElement.innerHTML = currentQuestion.question;
+    questionCategoryElement.innerHTML = currentQuestion.category;
+    questionDificultyElement.innerHTML = currentQuestion.difficulty;
     const correctAnswer = currentQuestion.correct_answer;
     let allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers];
     const arrayMix = (array) => {
@@ -69,7 +74,7 @@ const showQuestions = () => {
     allAnswers = arrayMix(allAnswers);
     allAnswers.forEach((answers) => {
         const button = document.createElement('button');
-        button.innerText = answers;
+        button.innerHTML = answers;
         if (answers === correctAnswer) {
             button.dataset.correct = 'true';
         } else {
@@ -107,8 +112,9 @@ const selectAnswer = (selectedButton, correctAnswer) => {
     if (questionsApi.length > currentQuestionIndex + 1) {
         btnNext.classList.remove('hide');
     } else {
-        btnStart.innerText = 'Restart';
-        btnStart.classList.remove('hide');
+        // btnStart.innerText = 'Restart';
+        // btnStart.classList.remove('hide');
+        btnStats.classList.remove('hide');
     }
 };
 
@@ -128,4 +134,5 @@ btnStart.addEventListener('click', () => {
 btnNext.addEventListener('click', () => {
     currentQuestionIndex++;
     setNextQuestion();
-})
+});
+btnStats.addEventListener('click', showStats);

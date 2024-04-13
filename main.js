@@ -14,51 +14,106 @@ const questionElement = document.getElementById('questions');
 const answersButtonsElement = document.getElementById('answers-buttons');
 const API_URL = 'https://opentdb.com/api.php?amount=10';
 let questionsApi = [];
+let correctAnswerAcumulator = 0;
 let currentQuestionIndex;
-console.log(home, quiz,stats,homeNav,quizNav,statsNav,welcomeQuiz,btnStart,btnNext,questionElement,answersButtonsElement)
 
 // FUNCIONES
 
 axios.get(API_URL)
 .then((res) => {
-    questionsApi = res.data;
-    console.log(questionsApi);
+    questionsApi = res.data.results;
+    console.log('questions', questionsApi);
+    setNextQuestion();
 }).catch((err) => console.log(err));
 
 const hideViews = () => {
     home.classList.add('hide');
     quiz.classList.add('hide');
     stats.classList.add('hide');
-}
+};
 
 const showHome = () => {
     hideViews();
     home.classList.remove('hide');
-}
+};
 
 const showQuiz = () => {
     hideViews();
     quiz.classList.remove('hide');
-}
+};
 
 const showStats = () => {
     hideViews();
     stats.classList.remove('hide');
-}
+};
 
 const startGame = () => {
     btnStart.classList.add('hide');
     currentQuestionIndex = 0;
     questionsContainerElement.classList.remove('hide');
+    setNextQuestion();
+};
+
+const showQuestions = () => {
+    const currentQuestion = questionsApi[currentQuestionIndex]
+    questionElement.innerText = currentQuestion.question;
+    const allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers];
+    const correctAnswer = currentQuestion.correct_answer;
+    allAnswers.forEach((answers) => {
+        const button = document.createElement('button');
+        button.innerText = answers;
+        button.addEventListener('click', () => {
+            selectAnswer(button, correctAnswer);
+        });
+        answersButtonsElement.appendChild(button);
+    });
+};
+
+const setNextQuestion = () => {
+    resetState();
+    showQuestions(questionsApi[currentQuestionIndex]);
+};
+
+const setStatusClass = (element) => {
+    if (element.dataset.correct == 'true') {
+        element.classList.add('correct');
+    } else {
+        element.classList.add('wrong');
+    }
+};
+
+const selectAnswer = (selectedButton, correctAnswer) => {
+    setStatusClass(selectedButton)
+    if (selectedButton.innerText === correctAnswer) {
+        correctAnswerAcumulator++;
+        console.log('acumulador respuestas correctas', correctAnswerAcumulator);
+    }
+    Array.from(answersButtonsElement.children).forEach((button) => {
+        setStatusClass(button);
+    });
+    if (questionsApi.length > currentQuestionIndex + 1) {
+        btnNext.classList.remove('hide');
+        correctAnswerAcumulator++;
+    } else {
+        btnStart.innerText = 'Restart';
+        btnStart.classList.remove('hide');
+    }
+};
+
+const resetState = () => {
+    btnNext.classList.add('hide');
+    answersButtonsElement.innerHTML = '';
 }
-
-// const showQuestions = (questionsApi) => {
-
-// }
 
 // LLAMAR FUNCIONES
 
 homeNav.addEventListener('click', showHome);
 quizNav.addEventListener('click', showQuiz);
 statsNav.addEventListener('click', showStats);
-btnStart.addEventListener('click', startGame);
+btnStart.addEventListener('click', () => {
+    startGame();
+});
+btnNext.addEventListener('click', () => {
+    currentQuestionIndex++;
+    setNextQuestion();
+})

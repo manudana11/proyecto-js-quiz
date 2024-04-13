@@ -62,6 +62,11 @@ const showQuestions = () => {
     allAnswers.forEach((answers) => {
         const button = document.createElement('button');
         button.innerText = answers;
+        if (answers === correctAnswer) {
+            button.dataset.correct = 'true';
+        } else {
+            button.dataset.correct = 'false';
+        }
         button.addEventListener('click', () => {
             selectAnswer(button, correctAnswer);
         });
@@ -75,7 +80,7 @@ const setNextQuestion = () => {
 };
 
 const setStatusClass = (element) => {
-    if (element.dataset.correct == 'true') {
+    if (element.dataset.correct === 'true') {
         element.classList.add('correct');
     } else {
         element.classList.add('wrong');
@@ -93,7 +98,6 @@ const selectAnswer = (selectedButton, correctAnswer) => {
     });
     if (questionsApi.length > currentQuestionIndex + 1) {
         btnNext.classList.remove('hide');
-        correctAnswerAcumulator++;
     } else {
         btnStart.innerText = 'Restart';
         btnStart.classList.remove('hide');

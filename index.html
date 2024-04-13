@@ -10,17 +10,17 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#" id="homeNav">Home</a>
+          <a class="navbar-brand" href="#" id="home-nav">Home</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#" id="quizNav">Comenzar Quiz</a>
+                <a class="nav-link active" aria-current="page" href="#" id="quiz-nav">Comenzar Quiz</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" id="statsNav">Estadisticas</a>
+                <a class="nav-link" href="#" id="stats-nav">Estadisticas</a>
               </li>
             </ul>
           </div>
@@ -28,14 +28,23 @@
     </nav>
 
     <article id="home">
-        <h1>Información del Quiz</h1>
+        <h1>Quiz information</h1>
     </article>
 
-    <article id="quiz" class="hiden">
-        <h2>¿Cuanto sabes sobre AUNNUSE</h2>
+    <article id="quiz" class="hide">
+        <section id="welcome-quiz">
+          <h2>Are you ready for the best Quiz?</h2>
+          <p></p>
+        </section>
+        <section id="questions-container" class="hide">
+          <div id="questions"><p>hola</p></div>
+          <div id="answers-buttons"></div>
+        </section>
+        <button id="btn-start">Start Quiz</button>
+        <button id="btn-next">Next Question</button>
     </article>
 
-    <article id="stats" class="hiden">
+    <article id="stats" class="hide">
         <h2>Sus estadisticas</h2>
     </article>
 

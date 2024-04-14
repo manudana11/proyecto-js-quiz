@@ -15,6 +15,7 @@ const questionElement = document.getElementById('questions');
 const answersButtonsElement = document.getElementById('answers-buttons');
 const questionCategoryElement = document.getElementById('questions-category');
 const questionDificultyElement = document.getElementById('questions-dificulty');
+const correctAnswerCounterElemet = document.getElementById('correct-answer-counter');
 const API_URL = 'https://opentdb.com/api.php?amount=10';
 let questionsApi = [];
 let correctAnswerAcumulator = 0;
@@ -52,6 +53,8 @@ const showStats = () => {
 
 const startGame = () => {
     btnStart.classList.add('hide');
+    welcomeQuiz.classList.add('hide');
+    btnStats.classList.add('hide');
     currentQuestionIndex = 0;
     questionsContainerElement.classList.remove('hide');
     setNextQuestion();
@@ -62,6 +65,7 @@ const showQuestions = () => {
     questionElement.innerHTML = currentQuestion.question;
     questionCategoryElement.innerHTML = currentQuestion.category;
     questionDificultyElement.innerHTML = currentQuestion.difficulty;
+    correctAnswerCounterElemet.innerHTML = `${correctAnswerAcumulator}/10`;
     const correctAnswer = currentQuestion.correct_answer;
     let allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers];
     const arrayMix = (array) => {
@@ -112,9 +116,10 @@ const selectAnswer = (selectedButton, correctAnswer) => {
     if (questionsApi.length > currentQuestionIndex + 1) {
         btnNext.classList.remove('hide');
     } else {
-        // btnStart.innerText = 'Restart';
-        // btnStart.classList.remove('hide');
+        btnStart.innerText = 'Restart';
+        btnStart.classList.remove('hide');
         btnStats.classList.remove('hide');
+        correctAnswerAcumulator = 0;
     }
 };
 

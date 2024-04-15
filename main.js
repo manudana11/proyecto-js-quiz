@@ -87,7 +87,7 @@ const generateResultsMesaje = (r) => {
             return 'Increidible! You are a legend.';
             break;
         case 10:
-            return 'Congratulations! You just broke the score meter.';
+            return 'Congratulations! You just broke the score';
             break;
         default:
             return 'You beat the game. GG'
@@ -142,7 +142,7 @@ const showQuestions = () => {
   </div>
   <div class="col-md-8">
     <div class="card-body">
-      <p class="card-text">${generateResultsMesaje(results)}</p>
+      <p class="card-text">${generateResultsMesaje(correctAnswerAcumulator)}</p>
     </div>
   </div>
   </div>
@@ -186,15 +186,19 @@ const setStatusClass = (element) => {
 };
 
 const selectAnswer = (selectedButton, correctAnswer) => {
-    setStatusClass(selectedButton)
+    setStatusClass(selectedButton);
+    const allAnswersButtonsElements = document.querySelectorAll('#answers-buttons button');
     if (selectedButton.innerText === correctAnswer) {
         correctAnswerAcumulator++;
         correctAnswerCounterElemet.innerHTML = `${correctAnswerAcumulator}/10`;
+        allAnswersButtonsElements.forEach(button => {
+            button.disabled = true;
+        });
+    } else {
+        allAnswersButtonsElements.forEach(button => {
+            button.disabled = true;
+        });
     };
-    const allAnswersButtonsElements = document.querySelectorAll('#answers-buttons button');
-    allAnswersButtonsElements.forEach(button => {
-        button.disabled = true;
-    });
     Array.from(answersButtonsElement.children).forEach((button) => {
         setStatusClass(button);
     });

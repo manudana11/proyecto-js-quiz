@@ -48,11 +48,51 @@ const showQuiz = () => {
     quiz.classList.remove('hide');
 };
 
-// const showStats = () => {
-//     hideViews();
-//     stats.classList.remove('hide');
-//     quizPlaysHistory();
-// };
+const showStats = () => {
+    hideViews();
+    stats.classList.remove('hide');
+    quizPlaysHistory();
+};
+
+const generateResultsMesaje = (r) => {
+    switch(r) {
+        case 0:
+            return 'Dedicate yourself to something else.';
+            
+        case 1:
+            return 'Who knew that wrong answers are also a skill! Keep practicing, you are doing great.';
+            break;
+        case 2:
+            return 'Do you need a map to find the answers?';
+            break;
+        case 3:
+            return 'Is this a score or a reminder of your mistakes?';
+            break;
+        case 4:
+            return 'Is this the best you can do? Really?';
+            break;
+        case 5:
+            return 'Almost did it! But you still have some obstacles on the way to victory.';
+            break;
+        case 6:
+            return `Nice try! But mediocrity won't get you very far.`;
+            break;
+        case 7:
+            return 'Your determination is admirable, but you still have a long way to go to achive the cixtory.';
+            break;
+        case 8:
+            return 'Impressive.';
+            break;
+        case 9:
+            return 'Increidible! You are a legend.';
+            break;
+        case 10:
+            return 'Congratulations! You just broke the score meter.';
+            break;
+        default:
+            return 'You beat the game. GG'
+    }
+}
 
 const startGame = () => {
     btnStart.classList.add('hide');
@@ -71,13 +111,13 @@ const quizPlaysHistory = () => {
         divResults.innerHTML= `
         <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
-        <h2 class="d-flex justify-content-center align-items-center">Your result are:</h2>
+        <h2 class="d-flex justify-content-center align-items-center">Your past result are:</h2>
         <div class="col-md-4">
             <h2 class="card-title d-flex justify-content-center">${results}/10</h2>
         </div>
         <div class="col-md-8">
             <div class="card-body">
-            <p class="card-text">Sigue intentandolo chaval</p>
+            <p class="card-text">${generateResultsMesaje(results)}</p>
             </div>
         </div>
         </div>
@@ -85,12 +125,6 @@ const quizPlaysHistory = () => {
         pastResultsElement.appendChild(divResults);
     });
     console.log(allResults);
-};
-
-const showStats = () => {
-    hideViews();
-    stats.classList.remove('hide');
-    quizPlaysHistory();
 };
 
 const showQuestions = () => {
@@ -108,7 +142,7 @@ const showQuestions = () => {
   </div>
   <div class="col-md-8">
     <div class="card-body">
-      <p class="card-text">Sigue intentandolo chaval</p>
+      <p class="card-text">${generateResultsMesaje(results)}</p>
     </div>
   </div>
   </div>
@@ -156,7 +190,11 @@ const selectAnswer = (selectedButton, correctAnswer) => {
     if (selectedButton.innerText === correctAnswer) {
         correctAnswerAcumulator++;
         correctAnswerCounterElemet.innerHTML = `${correctAnswerAcumulator}/10`;
-    }
+    };
+    const allAnswersButtonsElements = document.querySelectorAll('#answers-buttons button');
+    allAnswersButtonsElements.forEach(button => {
+        button.disabled = true;
+    });
     Array.from(answersButtonsElement.children).forEach((button) => {
         setStatusClass(button);
     });

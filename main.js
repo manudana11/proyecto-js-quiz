@@ -16,6 +16,7 @@ const answersButtonsElement = document.getElementById('answers-buttons');
 const questionCategoryElement = document.getElementById('questions-category');
 const questionDificultyElement = document.getElementById('questions-dificulty');
 const correctAnswerCounterElemet = document.getElementById('correct-answer-counter');
+const finalResultElement = document.getElementById('final-result');
 const API_URL = 'https://opentdb.com/api.php?amount=10';
 let questionsApi = [];
 let correctAnswerAcumulator = 0;
@@ -108,7 +109,7 @@ const selectAnswer = (selectedButton, correctAnswer) => {
     setStatusClass(selectedButton)
     if (selectedButton.innerText === correctAnswer) {
         correctAnswerAcumulator++;
-        console.log('acumulador respuestas correctas', correctAnswerAcumulator);
+        correctAnswerCounterElemet.innerHTML = `${correctAnswerAcumulator}/10`;
     }
     Array.from(answersButtonsElement.children).forEach((button) => {
         setStatusClass(button);
@@ -119,13 +120,22 @@ const selectAnswer = (selectedButton, correctAnswer) => {
         btnStart.innerText = 'Restart';
         btnStart.classList.remove('hide');
         btnStats.classList.remove('hide');
-        correctAnswerAcumulator = 0;
     }
 };
 
 const resetState = () => {
     btnNext.classList.add('hide');
     answersButtonsElement.innerHTML = '';
+}
+
+const setStatsInfo = () => {
+    finalResultElement.innerHTML = `${correctAnswerAcumulator}/10`;
+    finalResultElement.classList.remove('hide');
+    let actualResult = JSON.parse(localStorage.getItem('results')) || [];
+    actualResult.push(correctAnswerAcumulator);
+    localStorage.setItem('results', JSON.stringify(actualResult));
+    correctAnswerAcumulator = 0;
+    console.log(localStorage);
 }
 
 // LLAMAR FUNCIONES
@@ -140,4 +150,7 @@ btnNext.addEventListener('click', () => {
     currentQuestionIndex++;
     setNextQuestion();
 });
-btnStats.addEventListener('click', showStats);
+btnStats.addEventListener('click', () => {
+    showStats();
+    setStatsInfo();
+});

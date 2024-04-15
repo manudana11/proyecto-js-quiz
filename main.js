@@ -132,10 +132,10 @@ const setStatsInfo = () => {
     finalResultElement.innerHTML = `${correctAnswerAcumulator}/10`;
     finalResultElement.classList.remove('hide');
     let actualResult = JSON.parse(localStorage.getItem('results')) || [];
-    actualResult.push(correctAnswerAcumulator);
+    actualResult.unshift(correctAnswerAcumulator);
     localStorage.setItem('results', JSON.stringify(actualResult));
     correctAnswerAcumulator = 0;
-    console.log(localStorage);
+    console.log(localStorage.results);
 }
 
 // LLAMAR FUNCIONES

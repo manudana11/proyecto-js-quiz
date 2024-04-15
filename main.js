@@ -17,6 +17,7 @@ const questionCategoryElement = document.getElementById('questions-category');
 const questionDificultyElement = document.getElementById('questions-dificulty');
 const correctAnswerCounterElemet = document.getElementById('correct-answer-counter');
 const finalResultElement = document.getElementById('final-result');
+const pastResultsElement = document.getElementById('past-results');
 const API_URL = 'https://opentdb.com/api.php?amount=10';
 let questionsApi = [];
 let correctAnswerAcumulator = 0;
@@ -47,10 +48,11 @@ const showQuiz = () => {
     quiz.classList.remove('hide');
 };
 
-const showStats = () => {
-    hideViews();
-    stats.classList.remove('hide');
-};
+// const showStats = () => {
+//     hideViews();
+//     stats.classList.remove('hide');
+//     quizPlaysHistory();
+// };
 
 const startGame = () => {
     btnStart.classList.add('hide');
@@ -61,12 +63,56 @@ const startGame = () => {
     setNextQuestion();
 };
 
+const quizPlaysHistory = () => {
+    const allResults = JSON.parse(localStorage.getItem('results')) || [];
+    allResults.forEach((results) => {
+        console.log(results);
+        const divResults = document.createElement('div');
+        divResults.innerHTML= `
+        <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+        <h2 class="d-flex justify-content-center align-items-center">Your result are:</h2>
+        <div class="col-md-4">
+            <h2 class="card-title d-flex justify-content-center">${results}/10</h2>
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+            <p class="card-text">Sigue intentandolo chaval</p>
+            </div>
+        </div>
+        </div>
+        </div>`;
+        pastResultsElement.appendChild(divResults);
+    });
+    console.log(allResults);
+};
+
+const showStats = () => {
+    hideViews();
+    stats.classList.remove('hide');
+    quizPlaysHistory();
+};
+
 const showQuestions = () => {
     const currentQuestion = questionsApi[currentQuestionIndex]
     questionElement.innerHTML = currentQuestion.question;
     questionCategoryElement.innerHTML = currentQuestion.category;
     questionDificultyElement.innerHTML = currentQuestion.difficulty;
     correctAnswerCounterElemet.innerHTML = `${correctAnswerAcumulator}/10`;
+    pastResultsElement.innerHTML = `
+    <div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+  <h2 class="d-flex justify-content-center align-items-center">Your result are:</h2>
+  <div class="col-md-4">
+    <h2 class="card-title d-flex justify-content-center">${correctAnswerAcumulator}/10</h2>
+  </div>
+  <div class="col-md-8">
+    <div class="card-body">
+      <p class="card-text">Sigue intentandolo chaval</p>
+    </div>
+  </div>
+  </div>
+  </div>`;
     const correctAnswer = currentQuestion.correct_answer;
     let allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers];
     const arrayMix = (array) => {
@@ -129,11 +175,10 @@ const resetState = () => {
 }
 
 const setStatsInfo = () => {
-    finalResultElement.innerHTML = `${correctAnswerAcumulator}/10`;
-    finalResultElement.classList.remove('hide');
     let actualResult = JSON.parse(localStorage.getItem('results')) || [];
     actualResult.unshift(correctAnswerAcumulator);
     localStorage.setItem('results', JSON.stringify(actualResult));
+    finalResultElement.classList.remove('hide');
     correctAnswerAcumulator = 0;
     console.log(localStorage.results);
 }

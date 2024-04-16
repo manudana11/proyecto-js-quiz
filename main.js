@@ -47,7 +47,7 @@ const getQuestions = () => {
 .then((res) => {
     questionsApi = res.data.results;
     console.log('questions', questionsApi);
-    showQuestions();
+    setNextQuestion();
 }).catch((err) => console.log(err));
 }
 
@@ -125,6 +125,7 @@ const startGame = () => {
 };
 
 const quizPlaysHistory = () => {
+    pastResultsElement.innerHTML = '';
     const allResults = JSON.parse(localStorage.getItem('results')) || [];
     allResults.forEach((results) => {
         console.log(results);
@@ -157,41 +158,9 @@ const quizPlaysHistory = () => {
 const showQuestions = () => {
     const currentQuestion = questionsApi[currentQuestionIndex];
     questionElement.innerHTML = currentQuestion.question;
-    questionsContainerElement.innerHTML = `
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="card text-white bg-primary mb-3">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">${currentQuestion.question}</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>`;
     questionCategoryElement.innerHTML = currentQuestion.category;
     questionDificultyElement.innerHTML = currentQuestion.difficulty;
     correctAnswerCounterElemet.innerHTML = `${correctAnswerAcumulator}/10`;
-    pastResultsElement.innerHTML = `
-    <div class="card text-white bg-primary mb-3" style="max-width: 25rem;">
-          <div class="row g-0">
-            <div class="col-12" style="height: 50px;">
-              <div class="text-center py-3">
-                <h5>Your past result are:</h5>
-              </div>
-            </div>
-            <div class="col-md-4 position-relative" style='background-image: url(./assets/circle2.jpg); background-size: contain; background-repeat: no-repeat; max-width: 150px; height: 125px;'>
-              <div class="position-absolute top-50 start-50 translate-middle text-center w-100">
-                <h4 class="m-0">${correctAnswerAcumulator}/10</h4>
-              </div>
-            </div>
-            <div class="col-md-8 d-flex justify-content-center align-items-center" style="height: 125px; width: 248px;">
-              <div class="card-body text-center">
-                <p class="card-text">${generateResultsMesaje(correctAnswerAcumulator)}</p>
-              </div>
-            </div>
-          </div>
-        </div>`;
     const correctAnswer = currentQuestion.correct_answer;
     let allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers];
     const arrayMix = (array) => {
@@ -202,13 +171,9 @@ const showQuestions = () => {
         return array;
     }
     allAnswers = arrayMix(allAnswers);
-    let buttonRow = document.createElement('div');
-    buttonRow.classList.add('row');
-    allAnswers.forEach((answers, index) => {
-        console.log('crear boton', answers);
+    allAnswers.forEach((answers) => {
         const button = document.createElement('button');
         button.innerHTML = answers;
-        button.classList.add('btn', 'btn-lg', 'btn-secondary', 'col-md-6', 'mb-2');
         if (answers === correctAnswer) {
             button.dataset.correct = 'true';
         } else {
@@ -217,16 +182,11 @@ const showQuestions = () => {
         button.addEventListener('click', () => {
             selectAnswer(button, correctAnswer);
         });
-        answersButtonsElement.classList.remove('hide');
-        console.log('boton creado', button);
-        buttonRow.appendChild(button);
-        if ((index + 1) % 2 === 0 || index === allAnswers.length - 1) {
-            answersButtonsElement.appendChild(buttonRow);
-            buttonRow = document.createElement('div');
-            buttonRow.classList.add('row');
-        }
+        answersButtonsElement.appendChild(button);
     });
 };
+
+
 
 const setStatusClass = (element) => {
     if (element.dataset.correct === 'true') {
@@ -262,13 +222,35 @@ const selectAnswer = (selectedButton, correctAnswer) => {
     }
 };
 
-
+const clearPastResult = () => {
+    pastResultsElement.innerHTML = ``;
+};
 
 const setStatsInfo = () => {
     let actualResult = JSON.parse(localStorage.getItem('results')) || [];
     actualResult.unshift(correctAnswerAcumulator);
     localStorage.setItem('results', JSON.stringify(actualResult));
     finalResultElement.classList.remove('hide');
+    pastResultsElement.innerHTML = `
+    <div class="card text-white bg-primary mb-3" style="max-width: 25rem;">
+          <div class="row g-0">
+            <div class="col-12" style="height: 50px;">
+              <div class="text-center py-3">
+                <h5>Your  final  result  is:</h5>
+              </div>
+            </div>
+            <div class="col-md-4 position-relative" style='background-image: url(./assets/circle2.jpg); background-size: contain; background-repeat: no-repeat; max-width: 150px; height: 125px;'>
+              <div class="position-absolute top-50 start-50 translate-middle text-center w-100">
+                <h4 class="m-0">${correctAnswerAcumulator}/10</h4>
+              </div>
+            </div>
+            <div class="col-md-8 d-flex justify-content-center align-items-center" style="height: 125px; width: 248px;">
+              <div class="card-body text-center">
+                <p class="card-text">${generateResultsMesaje(correctAnswerAcumulator)}</p>
+              </div>
+            </div>
+          </div>
+        </div>`;
     correctAnswerAcumulator = 0;
     console.log(localStorage.results);
 }

@@ -25,12 +25,32 @@ let currentQuestionIndex;
 
 // FUNCIONES
 
-axios.get(API_URL)
+// axios.get(API_URL)
+// .then((res) => {
+//     questionsApi = res.data.results;
+//     console.log('questions', questionsApi);
+//     setNextQuestion();
+// }).catch((err) => console.log(err));
+
+
+const resetState = () => {
+    btnNext.classList.add('hide');
+    answersButtonsElement.innerHTML = '';
+}
+
+const setNextQuestion = () => {
+    resetState();
+    showQuestions(questionsApi[currentQuestionIndex]);
+};
+
+const getQuestions = () => {
+    axios.get(API_URL)
 .then((res) => {
     questionsApi = res.data.results;
     console.log('questions', questionsApi);
     setNextQuestion();
 }).catch((err) => console.log(err));
+}
 
 const hideViews = () => {
     home.classList.add('hide');
@@ -58,7 +78,7 @@ const generateResultsMesaje = (r) => {
     switch(r) {
         case 0:
             return 'Dedicate yourself to something else.';
-            
+            break;
         case 1:
             return 'Who knew that wrong answers are also a skill! Keep practicing, you are doing great.';
             break;
@@ -95,12 +115,13 @@ const generateResultsMesaje = (r) => {
 }
 
 const startGame = () => {
+    getQuestions();
     btnStart.classList.add('hide');
     welcomeQuiz.classList.add('hide');
     btnStats.classList.add('hide');
     currentQuestionIndex = 0;
     questionsContainerElement.classList.remove('hide');
-    setNextQuestion();
+   // setNextQuestion();
 };
 
 const quizPlaysHistory = () => {
@@ -172,10 +193,7 @@ const showQuestions = () => {
     });
 };
 
-const setNextQuestion = () => {
-    resetState();
-    showQuestions(questionsApi[currentQuestionIndex]);
-};
+
 
 const setStatusClass = (element) => {
     if (element.dataset.correct === 'true') {
@@ -211,10 +229,7 @@ const selectAnswer = (selectedButton, correctAnswer) => {
     }
 };
 
-const resetState = () => {
-    btnNext.classList.add('hide');
-    answersButtonsElement.innerHTML = '';
-}
+
 
 const setStatsInfo = () => {
     let actualResult = JSON.parse(localStorage.getItem('results')) || [];

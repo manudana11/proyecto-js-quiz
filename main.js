@@ -32,7 +32,6 @@ let currentQuestionIndex;
 //     setNextQuestion();
 // }).catch((err) => console.log(err));
 
-
 const resetState = () => {
     btnNext.classList.add('hide');
     answersButtonsElement.innerHTML = '';
@@ -120,6 +119,7 @@ const startGame = () => {
     welcomeQuiz.classList.add('hide');
     btnStats.classList.add('hide');
     currentQuestionIndex = 0;
+    correctAnswerAcumulator = 0;
     questionsContainerElement.classList.remove('hide');
    // setNextQuestion();
 };
@@ -130,7 +130,7 @@ const quizPlaysHistory = () => {
         console.log(results);
         const divResults = document.createElement('div');
         divResults.innerHTML= `
-        <div class="card mb-3" style="max-width: 540px;">
+        <div class="card text-white bg-info mb-3" style="max-width: 25rem;">
         <div class="row g-0">
         <h2 class="d-flex justify-content-center align-items-center">Your past result are:</h2>
         <div class="col-md-4">

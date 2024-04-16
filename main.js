@@ -47,7 +47,7 @@ const getQuestions = () => {
 .then((res) => {
     questionsApi = res.data.results;
     console.log('questions', questionsApi);
-    setNextQuestion();
+    showQuestions();
 }).catch((err) => console.log(err));
 }
 
@@ -97,7 +97,7 @@ const generateResultsMesaje = (r) => {
             return `Nice try! But mediocrity won't get you very far.`;
             break;
         case 7:
-            return 'Your determination is admirable, but you still have a long way to go to achive the cixtory.';
+            return 'Your determination is admirable, but you still have a long way to go to achive the vixtory.';
             break;
         case 8:
             return 'Impressive.';
@@ -131,17 +131,23 @@ const quizPlaysHistory = () => {
         const divResults = document.createElement('div');
         divResults.innerHTML= `
         <div class="card text-white bg-info mb-3" style="max-width: 25rem;">
-        <div class="row g-0">
-        <h2 class="d-flex justify-content-center align-items-center">Your past result are:</h2>
-        <div class="col-md-4">
-            <h2 class="card-title d-flex justify-content-center">${results}/10</h2>
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-            <p class="card-text">${generateResultsMesaje(results)}</p>
+          <div class="row g-0">
+            <div class="col-12" style="height: 50px;">
+              <div class="text-center py-3">
+                <h5>Your past result are:</h5>
+              </div>
             </div>
-        </div>
-        </div>
+            <div class="col-md-4 position-relative" style='background-image: url(./assets/circle.jpg); background-size: contain; background-repeat: no-repeat; max-width: 150px; height: 125px;'>
+              <div class="position-absolute top-50 start-50 translate-middle text-center w-100">
+                <h4 class="m-0">${results}/10</h4>
+              </div>
+            </div>
+            <div class="col-md-8 d-flex justify-content-center align-items-center" style="height: 125px; width: 248px;">
+              <div class="card-body text-center">
+                <p class="card-text">${generateResultsMesaje(results)}</p>
+              </div>
+            </div>
+          </div>
         </div>`;
         pastResultsElement.appendChild(divResults);
     });
@@ -149,25 +155,43 @@ const quizPlaysHistory = () => {
 };
 
 const showQuestions = () => {
-    const currentQuestion = questionsApi[currentQuestionIndex]
+    const currentQuestion = questionsApi[currentQuestionIndex];
     questionElement.innerHTML = currentQuestion.question;
+    questionsContainerElement.innerHTML = `
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">${currentQuestion.question}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`;
     questionCategoryElement.innerHTML = currentQuestion.category;
     questionDificultyElement.innerHTML = currentQuestion.difficulty;
     correctAnswerCounterElemet.innerHTML = `${correctAnswerAcumulator}/10`;
     pastResultsElement.innerHTML = `
-    <div class="card mb-3" style="max-width: 540px;">
-  <div class="row g-0">
-  <h2 class="d-flex justify-content-center align-items-center">Your result are:</h2>
-  <div class="col-md-4">
-    <h2 class="card-title d-flex justify-content-center">${correctAnswerAcumulator}/10</h2>
-  </div>
-  <div class="col-md-8">
-    <div class="card-body">
-      <p class="card-text">${generateResultsMesaje(correctAnswerAcumulator)}</p>
-    </div>
-  </div>
-  </div>
-  </div>`;
+    <div class="card text-white bg-primary mb-3" style="max-width: 25rem;">
+          <div class="row g-0">
+            <div class="col-12" style="height: 50px;">
+              <div class="text-center py-3">
+                <h5>Your past result are:</h5>
+              </div>
+            </div>
+            <div class="col-md-4 position-relative" style='background-image: url(./assets/circle2.jpg); background-size: contain; background-repeat: no-repeat; max-width: 150px; height: 125px;'>
+              <div class="position-absolute top-50 start-50 translate-middle text-center w-100">
+                <h4 class="m-0">${correctAnswerAcumulator}/10</h4>
+              </div>
+            </div>
+            <div class="col-md-8 d-flex justify-content-center align-items-center" style="height: 125px; width: 248px;">
+              <div class="card-body text-center">
+                <p class="card-text">${generateResultsMesaje(correctAnswerAcumulator)}</p>
+              </div>
+            </div>
+          </div>
+        </div>`;
     const correctAnswer = currentQuestion.correct_answer;
     let allAnswers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers];
     const arrayMix = (array) => {
@@ -178,9 +202,13 @@ const showQuestions = () => {
         return array;
     }
     allAnswers = arrayMix(allAnswers);
-    allAnswers.forEach((answers) => {
+    let buttonRow = document.createElement('div');
+    buttonRow.classList.add('row');
+    allAnswers.forEach((answers, index) => {
+        console.log('crear boton', answers);
         const button = document.createElement('button');
         button.innerHTML = answers;
+        button.classList.add('btn', 'btn-lg', 'btn-secondary', 'col-md-6', 'mb-2');
         if (answers === correctAnswer) {
             button.dataset.correct = 'true';
         } else {
@@ -189,11 +217,16 @@ const showQuestions = () => {
         button.addEventListener('click', () => {
             selectAnswer(button, correctAnswer);
         });
-        answersButtonsElement.appendChild(button);
+        answersButtonsElement.classList.remove('hide');
+        console.log('boton creado', button);
+        buttonRow.appendChild(button);
+        if ((index + 1) % 2 === 0 || index === allAnswers.length - 1) {
+            answersButtonsElement.appendChild(buttonRow);
+            buttonRow = document.createElement('div');
+            buttonRow.classList.add('row');
+        }
     });
 };
-
-
 
 const setStatusClass = (element) => {
     if (element.dataset.correct === 'true') {

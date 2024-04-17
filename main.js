@@ -88,6 +88,7 @@ const hideViews = () => {
 const showHome = () => {
     hideViews();
     home.classList.remove('hide');
+    createChart();
 };
 
 const showQuiz = () => {
@@ -199,8 +200,8 @@ const showQuestions = () => {
     }
     allAnswers = arrayMix(allAnswers);
     allAnswers.forEach((answers) => {
-        const button = document.createElement('button');
-        button.innerHTML = answers;
+        const button = document.createElement('div');
+        button.innerHTML = `<button type="button" class="btn btn-primary">${answers}</button>`;
         if (answers === correctAnswer) {
             button.dataset.correct = 'true';
         } else {
@@ -225,7 +226,7 @@ const setStatusClass = (element) => {
 
 const selectAnswer = (selectedButton, correctAnswer) => {
     setStatusClass(selectedButton);
-    const allAnswersButtonsElements = document.querySelectorAll('#answers-buttons button');
+    const allAnswersButtonsElements = document.querySelectorAll('#answers-buttons div button');
     if (selectedButton.innerText === correctAnswer) {
         correctAnswerAcumulator++;
         correctAnswerCounterElemet.innerHTML = `${correctAnswerAcumulator}/10`;
@@ -257,30 +258,38 @@ const setStatsInfo = () => {
     let actualResult = JSON.parse(localStorage.getItem('results')) || [];
     actualResult.unshift(correctAnswerAcumulator);
     localStorage.setItem('results', JSON.stringify(actualResult));
-    pastResultsElement.innerHTML = `
-    <div class="card text-white bg-primary mb-3" style="max-width: 25rem;">
+    pastResultsElement.innerHTML = '';
+
+    const lastResult = actualResult[0];
+    const divResult = document.createElement('div');
+    divResult.innerHTML = `
+        <div class="card text-white bg-primary mb-3" style="max-width: 25rem;">
           <div class="row g-0">
             <div class="col-12" style="height: 50px;">
               <div class="text-center py-3">
-                <h5>Your  final  result  is:</h5>
+                <h5>Your result is:</h5>
               </div>
             </div>
-            <div class="col-md-4 position-relative" style='background-image: url(./assets/circle2.jpg); background-size: contain; background-repeat: no-repeat; max-width: 150px; height: 125px;'>
+            <div class="col-md-4 position-relative" style='background-image: url(./assets/circle.jpg); background-size: contain; background-repeat: no-repeat; max-width: 150px; height: 125px;'>
               <div class="position-absolute top-50 start-50 translate-middle text-center w-100">
-                <h4 class="m-0">${correctAnswerAcumulator}/10</h4>
+                <h4 class="m-0">${lastResult}/10</h4>
               </div>
             </div>
             <div class="col-md-8 d-flex justify-content-center align-items-center" style="height: 125px; width: 248px;">
               <div class="card-body text-center">
-                <p class="card-text">${generateResultsMesaje(correctAnswerAcumulator)}</p>
+                <p class="card-text">${generateResultsMesaje(lastResult)}</p>
               </div>
             </div>
           </div>
         </div>`;
+    pastResultsElement.appendChild(divResult);
+
     finalResultElement.classList.remove('hide');
     correctAnswerAcumulator = 0;
+    quizPlaysHistory();
     console.log('set stats info',localStorage.results);
 }
+
 
 // LLAMAR FUNCIONES
 

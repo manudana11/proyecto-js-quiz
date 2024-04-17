@@ -42,13 +42,41 @@ const setNextQuestion = () => {
     showQuestions(questionsApi[currentQuestionIndex]);
 };
 
+const createChart = () => {
+    const existingChart = Chart.getChart('myChart');
+    if(existingChart) {
+        existingChart.destroy();
+    };
+    let allResults = JSON.parse(localStorage.getItem('results')) || [];
+    const gamesNumber = allResults.length;
+    const labels = Array.from({length: gamesNumber}, (_, index) => index +1)
+
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'My results',
+            backgroundColor: 'rgb(0, 162, 232)',
+            borderColor: 'rgb(255, 255, 255)',
+            data: allResults,
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {}
+    };
+
+    const myChart = new Chart('myChart', config);
+};
+
 const getQuestions = () => {
     axios.get(API_URL)
 .then((res) => {
     questionsApi = res.data.results;
     console.log('questions', questionsApi);
     setNextQuestion();
-}).catch((err) => console.log(err));
+}).catch((err) => console.error(err));
 }
 
 const hideViews = () => {
@@ -70,7 +98,6 @@ const showQuiz = () => {
 const showStats = () => {
     hideViews();
     stats.classList.remove('hide');
-    quizPlaysHistory();
 };
 
 const generateResultsMesaje = (r) => {
@@ -128,7 +155,7 @@ const quizPlaysHistory = () => {
     pastResultsElement.innerHTML = '';
     const allResults = JSON.parse(localStorage.getItem('results')) || [];
     allResults.forEach((results) => {
-        console.log(results);
+        console.log('results',results);
         const divResults = document.createElement('div');
         divResults.innerHTML= `
         <div class="card text-white bg-info mb-3" style="max-width: 25rem;">
@@ -152,7 +179,7 @@ const quizPlaysHistory = () => {
         </div>`;
         pastResultsElement.appendChild(divResults);
     });
-    console.log(allResults);
+    console.log('all results',allResults);
 };
 
 const showQuestions = () => {
@@ -230,7 +257,6 @@ const setStatsInfo = () => {
     let actualResult = JSON.parse(localStorage.getItem('results')) || [];
     actualResult.unshift(correctAnswerAcumulator);
     localStorage.setItem('results', JSON.stringify(actualResult));
-    finalResultElement.classList.remove('hide');
     pastResultsElement.innerHTML = `
     <div class="card text-white bg-primary mb-3" style="max-width: 25rem;">
           <div class="row g-0">
@@ -251,8 +277,9 @@ const setStatsInfo = () => {
             </div>
           </div>
         </div>`;
+    finalResultElement.classList.remove('hide');
     correctAnswerAcumulator = 0;
-    console.log(localStorage.results);
+    console.log('set stats info',localStorage.results);
 }
 
 // LLAMAR FUNCIONES
@@ -271,3 +298,8 @@ btnStats.addEventListener('click', () => {
     showStats();
     setStatsInfo();
 });
+document.addEventListener('DOMContentLoaded', () => {
+    //setStatsInfo();
+    quizPlaysHistory();
+    createChart();
+})

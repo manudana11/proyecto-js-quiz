@@ -1,5 +1,33 @@
+#home, #quiz, #stats {
+    margin: 30px;
+}
+
+#questions-container, #answers-buttons {
+    margin: 10px;
+}
+
+#questions-container {
+    text-align: center;
+}
+
+.btn, #questions-container {
+    margin-bottom: 10px;
+}
+
+#answers-buttons button {
+    margin-bottom: 5px;
+}
+
+.card {
+    margin-bottom: 10px;
+}
+
 .hide {
     display: none;
+}
+
+.text-left {
+    text-align: left;
 }
 
 .correct {

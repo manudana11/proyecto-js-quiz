@@ -10,6 +10,7 @@ const welcomeQuiz = document.getElementById('welcome-quiz');
 const btnStart = document.getElementById('btn-start');
 const btnNext = document.getElementById('btn-next');
 const btnStats = document.getElementById('btn-stats');
+const btnGoStartQuiz = document.getElementById('btn-go-start-quiz')
 const questionsContainerElement = document.getElementById('questions-container');
 const questionElement = document.getElementById('questions');
 const answersButtonsElement = document.getElementById('answers-buttons');
@@ -312,3 +313,4 @@ document.addEventListener('DOMContentLoaded', () => {
     quizPlaysHistory();
     createChart();
 })
+btnGoStartQuiz.addEventListener('click', showQuiz);

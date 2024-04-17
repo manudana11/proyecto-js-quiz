@@ -38,9 +38,11 @@
                       <canvas id="myChart"></canvas>
                   </div>
               </div>
-              <div class="col-md-6">
+              <div class="text-center col-md-6">
                   <h3>Game Rules</h3>
-                  <p>Las normas del juego son...</p>
+                  <p class="text-left">Answer the maximum number of correct answers, the difficulties of the answers are random, just like the categories. You don't have time to answer the questions but if you take more than 10 seconds per question you are a bit bad. Are you ready to achieve victory?
+                  </p>
+                  <button id="btn-go-start-quiz" class="btn btn-lg btn-info">I'm ready</button>
               </div>
           </div>
       </section>
@@ -52,7 +54,6 @@
           <p></p>
         </section>
         <section id="questions-container" class="text-center hide">
-          <!-- clase de arriba: d-flex justify-content-center align-items-center -->
           <div id="correct-answer-counter" class="mb-3"></div>
           <div id="questions-category"></div><div id="questions-dificulty"></div>
           <div id="questions" class="mb-3"></div>

@@ -24,19 +24,10 @@ let questionsApi = [];
 let correctAnswerAcumulator = 0;
 let currentQuestionIndex;
 
-// FUNCIONES
-
-// axios.get(API_URL)
-// .then((res) => {
-//     questionsApi = res.data.results;
-//     console.log('questions', questionsApi);
-//     setNextQuestion();
-// }).catch((err) => console.log(err));
-
 const resetState = () => {
     btnNext.classList.add('hide');
     answersButtonsElement.innerHTML = '';
-}
+};
 
 const setNextQuestion = () => {
     resetState();
@@ -78,7 +69,7 @@ const getQuestions = () => {
     console.log('questions', questionsApi);
     setNextQuestion();
 }).catch((err) => console.error(err));
-}
+};
 
 const hideViews = () => {
     home.classList.add('hide');
@@ -150,7 +141,6 @@ const startGame = () => {
     currentQuestionIndex = 0;
     correctAnswerAcumulator = 0;
     questionsContainerElement.classList.remove('hide');
-   // setNextQuestion();
 };
 
 const quizPlaysHistory = () => {
@@ -164,7 +154,7 @@ const quizPlaysHistory = () => {
           <div class="row g-0">
             <div class="col-12" style="height: 50px;">
               <div class="text-center py-3">
-                <h5>Your past result are:</h5>
+                <h5>Your final result is:</h5>
               </div>
             </div>
             <div class="col-md-4 position-relative" style='background-image: url(./assets/circle.jpg); background-size: contain; background-repeat: no-repeat; max-width: 150px; height: 125px;'>
@@ -248,7 +238,7 @@ const selectAnswer = (selectedButton, correctAnswer) => {
         btnStart.innerText = 'Restart';
         btnStart.classList.remove('hide');
         btnStats.classList.remove('hide');
-    }
+    };
 };
 
 const clearPastResult = () => {
@@ -260,7 +250,6 @@ const setStatsInfo = () => {
     actualResult.unshift(correctAnswerAcumulator);
     localStorage.setItem('results', JSON.stringify(actualResult));
     pastResultsElement.innerHTML = '';
-
     const lastResult = actualResult[0];
     const divResult = document.createElement('div');
     divResult.innerHTML = `
@@ -268,7 +257,7 @@ const setStatsInfo = () => {
           <div class="row g-0">
             <div class="col-12" style="height: 50px;">
               <div class="text-center py-3">
-                <h5>Your result is:</h5>
+                <h5>Your final result is:</h5>
               </div>
             </div>
             <div class="col-md-4 position-relative" style='background-image: url(./assets/circle.jpg); background-size: contain; background-repeat: no-repeat; max-width: 150px; height: 125px;'>
@@ -284,15 +273,11 @@ const setStatsInfo = () => {
           </div>
         </div>`;
     pastResultsElement.appendChild(divResult);
-
     finalResultElement.classList.remove('hide');
     correctAnswerAcumulator = 0;
     quizPlaysHistory();
     console.log('set stats info',localStorage.results);
-}
-
-
-// LLAMAR FUNCIONES
+};
 
 homeNav.addEventListener('click', showHome);
 quizNav.addEventListener('click', showQuiz);

@@ -1,3 +1,5 @@
+![Logo]()![Logo]()![Logo]()
+
 # Proyecto JavaScript Quiz
 
 En este pryecto de JavaScript hemos querido hacer una SPA para crear nuestro Quiz.
@@ -6,7 +8,7 @@ En este pryecto de JavaScript hemos querido hacer una SPA para crear nuestro Qui
 
 Esta web esta diseñada como una Single Page Aplication o SPA y conta de una pagina de Home, la pagina del Quiz y una donde podemos ver todas nuestras puntuaciones.
 
-![foto]()
+![App Screenshot](./assets/captures/quiz-home.jpg)
 
 ## 2. Home
 
@@ -24,4 +26,4 @@ En esta sección tenemos un boton para iniciar el Quiz y una vez le damos se emp
 
 Aquí mostramos todos los resultados que hemos obtenido con un mensaje personalizado segun la puntuacion obtenida.
 
-![foto]()
+![foto](./)

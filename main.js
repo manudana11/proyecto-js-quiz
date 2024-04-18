@@ -1,5 +1,3 @@
-// VARIABLES
-
 const home = document.getElementById('home');
 const quiz = document.getElementById('quiz');
 const stats = document.getElementById('stats');

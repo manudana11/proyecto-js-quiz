@@ -1,4 +1,4 @@
-![Logo]()![Logo]()![Logo]()
+![Logo](./assets/captures/html-js-css.jpg)
 
 # Proyecto JavaScript Quiz
 
@@ -21,6 +21,7 @@ Esta seccion es donde aparecemos cuando cargamos la pagina. Aquí podemos ver la
 En esta sección tenemos un boton para iniciar el Quiz y una vez le damos se empiezan a mostrar las preguntas. Hasta que no seleccionemos una respuesta no nos aparecera el boton para ir a la siguiente pregunta. Al finalizar las 10 preguntas tienes la opcion de jugar otra vez o ir a ver las estadisticas.
 
 ![App Screenshot](./assets/captures/quiz-question.jpg)
+![App Screenshot](./assets/captures/quiz-last-question.jpg)
 ![App Screenshot](./assets/captures/final-quiz-stats.jpg)
 
 ## Quiz Stats

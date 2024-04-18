@@ -66,7 +66,6 @@ const getQuestions = () => {
     axios.get(API_URL)
 .then((res) => {
     questionsApi = res.data.results;
-    console.log('questions', questionsApi);
     setNextQuestion();
 }).catch((err) => console.error(err));
 };
@@ -131,7 +130,7 @@ const generateResultsMesaje = (r) => {
         default:
             return 'You beat the game. GG'
     }
-}
+};
 
 const startGame = () => {
     getQuestions();
@@ -147,7 +146,6 @@ const quizPlaysHistory = () => {
     pastResultsElement.innerHTML = '';
     const allResults = JSON.parse(localStorage.getItem('results')) || [];
     allResults.forEach((results) => {
-        console.log('results',results);
         const divResults = document.createElement('div');
         divResults.innerHTML= `
         <div class="card text-white bg-info mb-3" style="max-width: 25rem;">
@@ -171,7 +169,6 @@ const quizPlaysHistory = () => {
         </div>`;
         pastResultsElement.appendChild(divResults);
     });
-    console.log('all results',allResults);
 };
 
 const showQuestions = () => {
@@ -188,7 +185,7 @@ const showQuestions = () => {
             [array[i], array[j]] = [array[j], array[i]];
         }
         return array;
-    }
+    };
     allAnswers = arrayMix(allAnswers);
     allAnswers.forEach((answers) => {
         const button = document.createElement('div');
@@ -197,7 +194,7 @@ const showQuestions = () => {
             button.dataset.correct = 'true';
         } else {
             button.dataset.correct = 'false';
-        }
+        };
         button.addEventListener('click', () => {
             selectAnswer(button, correctAnswer);
         });
@@ -212,7 +209,7 @@ const setStatusClass = (element) => {
         element.classList.add('correct');
     } else {
         element.classList.add('wrong');
-    }
+    };
 };
 
 const selectAnswer = (selectedButton, correctAnswer) => {
@@ -276,7 +273,6 @@ const setStatsInfo = () => {
     finalResultElement.classList.remove('hide');
     correctAnswerAcumulator = 0;
     quizPlaysHistory();
-    console.log('set stats info',localStorage.results);
 };
 
 homeNav.addEventListener('click', showHome);
@@ -294,7 +290,6 @@ btnStats.addEventListener('click', () => {
     setStatsInfo();
 });
 document.addEventListener('DOMContentLoaded', () => {
-    //setStatsInfo();
     quizPlaysHistory();
     createChart();
 })
